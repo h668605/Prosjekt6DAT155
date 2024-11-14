@@ -86,16 +86,16 @@ async function main() {
      * We are using the async/await language constructs of Javascript:
      *  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
      */
-    const heightmapImage = await Utilities.loadImage('resources/images/heightmap.png');
-    const width = 100;
+    const heightmapImage = await Utilities.loadImage('resources/images/KartBergenGrayscalePNG.png');
+    const width = 1000;
 
     const simplex = new SimplexNoise();
     const terrainGeometry = new TerrainBufferGeometry({
         width,
         heightmapImage,
         // noiseFn: simplex.noise.bind(simplex),
-        numberOfSubdivisions: 128,
-        height: 20
+        numberOfSubdivisions: 160,
+        height: 70
     });
 
     const grassTexture = new TextureLoader().load('resources/textures/grass_02.png');
