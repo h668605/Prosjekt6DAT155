@@ -98,7 +98,7 @@ async function main() {
      * We are using the async/await language constructs of Javascript:
      *  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
      */
-    const heightmapImage = await Utilities.loadImage('resources/images/KartBergenGrayscalePNG.png');
+    const heightmapImage = await Utilities.loadImage('resources/images/KartBergenGrayscalePNGMindre.png');
     const width = 100;
 
     const simplex = new SimplexNoise();
@@ -121,7 +121,7 @@ async function main() {
     rockTexture.repeat.set(1500 / width, 1500 / width);
 
 
-    const splatMap = new TextureLoader().load('resources/images/BergenSplatmap.png');
+    const splatMap = new TextureLoader().load('resources/images/SplatmapBergenMindre.png');
 
     const terrainMaterial = new TextureSplattingMaterial({
         color: 0xffffff,
