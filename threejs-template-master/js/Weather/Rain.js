@@ -6,13 +6,13 @@ import {
 } from '../lib/three.module.js';
 
 export class Rain {
-    constructor(scene, rainCount = 1000) {
+    constructor(scene, rainCount) {
         this.scene = scene;
         this.rainCount = rainCount;
         this.rain = []; // Array for regndråpene
         this.rainMaterial = new MeshBasicMaterial({
-            color: 0xaaaaaa, // Farge for regndråpene
-            opacity: 0.5,
+            color: 0x5f9ea0, // Farge for regndråpene
+            opacity: 0.7,
             transparent: true,
             depthWrite: false,
         });
@@ -33,7 +33,7 @@ export class Rain {
             );
 
             // Tilfeldig fallhastighet for regndråpene
-            raindrop.velocity = new Vector3(0, -Math.random() * 0.5 - 0.2, 0);
+            raindrop.velocity = new Vector3(0, -Math.random() * 0.2 - 0.1, 0);
 
             this.rain.push(raindrop);
             this.scene.add(raindrop); // Legg til regndråpen i scenen
