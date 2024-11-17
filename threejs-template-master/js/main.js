@@ -27,6 +27,7 @@ import TerrainBufferGeometry from './terrain/TerrainBufferGeometry.js';
 import {GLTFLoader} from './loaders/GLTFLoader.js';
 import {SimplexNoise} from './lib/SimplexNoise.js';
 import * as rain from './Weather/Rain.js';
+import * as Skybox from "./Skybox/Skybox.js";
 //import * as clouds from './Weather/Clouds.js';
 
 
@@ -191,49 +192,8 @@ async function main() {
     /*
     Lager skybox
      */
-    // File paths for the skybox textures
-    const mpath = "resources/images/GRAA.png";
-    const skyboxPaths = [
-        mpath, // +X
-        mpath, // -X
-        mpath, // +Y
-        mpath, // -Y
-        mpath, // +Z
-        mpath // -Z
-    ];
-
-    const loader1 = new CubeTextureLoader();
-    const cubeTexture = loader1.load(skyboxPaths);
-    scene.background = cubeTexture;
-
-    const skyBoxGeometry = new BoxGeometry(1000, 1000, 1000);
-    skyBoxGeometry.scale(-1, 1, 1); // Invert the cube so it faces inward
-
-    const skyBoxMaterial = new ShaderMaterial({
-        uniforms: {
-            skybox: { value: cubeTexture },
-        },
-        vertexShader: `
-        varying vec3 vWorldPosition;
-        void main() {
-            vec4 worldPosition = modelMatrix * vec4(position, 1.0);
-            vWorldPosition = worldPosition.xyz;
-            gl_Position = projectionMatrix * viewMatrix * worldPosition;
-        }
-    `,
-        fragmentShader: `
-        uniform samplerCube skybox;
-        varying vec3 vWorldPosition;
-        void main() {
-            gl_FragColor = textureCube(skybox, normalize(vWorldPosition));
-        }
-    `,
-        side: BackSide, // Render inside of the cube
-    });
-    const skyBox = new Mesh(skyBoxGeometry, skyBoxMaterial);
-
-    scene.add(skyBox);
-    skyBox.position.set(0, 0, 0);
+    const skyboxTexturePath = "resources/images/GRAA.png"; // Path to the texture
+    const skyboxSystem = new Skybox.Skybox(scene, skyboxTexturePath);  // Instantiate and add the skybox to the scene
 
     /*
      * Regn
