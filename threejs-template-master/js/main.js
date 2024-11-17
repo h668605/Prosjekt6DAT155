@@ -28,7 +28,7 @@ import {GLTFLoader} from './loaders/GLTFLoader.js';
 import {SimplexNoise} from './lib/SimplexNoise.js';
 import * as rain from './Weather/Rain.js';
 import * as Skybox from "./Skybox/Skybox.js";
-//import * as clouds from './Weather/Clouds.js';
+import * as clouds from './Weather/Clouds.js';
 
 
 async function main() {
@@ -189,27 +189,27 @@ async function main() {
         }
     );
 
-    /*
+    /**
     Lager skybox
      */
-    const skyboxTexturePath = "resources/images/GRAA.png"; // Path to the texture
+    const skyboxTexturePath = "resources/images/Lyseblaa.png"; // Path to the texture
     const skyboxSystem = new Skybox.Skybox(scene, skyboxTexturePath);  // Instantiate and add the skybox to the scene
 
-    /*
+    /**
      * Regn
      */
     // Initialize the rain system
-    const rainSystem = new rain.Rain(scene, 5000);  // Pass scene and number of raindrops
-    /*
+    const rainSystem = new rain.Rain(scene, 7000);  // Pass scene and number of raindrops
+    /**
     Skyer
      */
-    //const cloudSystem = new clouds.Clouds(scene, 'resources/images/Cloud_tex.png', 100);
+   // const cloudSystem = new clouds.Clouds(scene, 150);
 
-    /*
+    /**
     Tåke
      */
-    scene.fog = new Fog( 0x8b9ea8, 20, 150);
-    /*
+    scene.fog = new Fog( 0x8b9ea8, 30, 175);
+    /**
      * Set up camera controller:
      */
 
@@ -321,7 +321,7 @@ async function main() {
         const deltaTime = (now - then) / 1000; // Time difference in seconds
         rainSystem.updateRain(deltaTime);
         //Skyer
-        //cloudSystem.updateClouds(camera);
+        //cloudSystem.updateCloud(delta);
 
         // render scene:
         renderer.render(scene, camera);
