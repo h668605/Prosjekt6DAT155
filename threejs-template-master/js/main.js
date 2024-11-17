@@ -99,7 +99,7 @@ async function main() {
      *  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
      */
     const heightmapImage = await Utilities.loadImage('resources/images/KartBergenGrayscalePNG.png');
-    const width = 300;
+    const width = 100;
 
     const simplex = new SimplexNoise();
     const terrainGeometry = new TerrainBufferGeometry({
@@ -107,7 +107,7 @@ async function main() {
         heightmapImage,
         // noiseFn: simplex.noise.bind(simplex),
         numberOfSubdivisions: 160,
-        height: 30
+        height: 10
     });
 
     const grassTexture = new TextureLoader().load('resources/textures/grass_02.png');
@@ -157,7 +157,7 @@ async function main() {
 
                     const height = terrainGeometry.getHeightAt(px, pz);
 
-                    if (height < 5) {
+                    if (height < 10) {
                         const tree = object.scene.children[0].clone();
 
                         tree.traverse((child) => {
@@ -173,7 +173,7 @@ async function main() {
 
                         tree.rotation.y = Math.random() * (2 * Math.PI);
 
-                        tree.scale.multiplyScalar(1.5 + Math.random() * 1);
+                        tree.scale.multiplyScalar(0.5+Math.random()*0.1);
 
                         scene.add(tree);
                     }
