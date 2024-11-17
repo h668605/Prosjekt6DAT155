@@ -98,8 +98,8 @@ async function main() {
      * We are using the async/await language constructs of Javascript:
      *  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
      */
-    const heightmapImage = await Utilities.loadImage('resources/images/KartBergenGrayscalePNG.png');
-    const width = 1000;
+    const heightmapImage = await Utilities.loadImage('resources/images/KartBergenGrayscalePNGMindre.png');
+    const width = 100;
 
     const simplex = new SimplexNoise();
     const terrainGeometry = new TerrainBufferGeometry({
@@ -107,7 +107,7 @@ async function main() {
         heightmapImage,
         // noiseFn: simplex.noise.bind(simplex),
         numberOfSubdivisions: 160,
-        height: 70
+        height: 10
     });
 
     const grassTexture = new TextureLoader().load('resources/textures/grass_02.png');
@@ -115,18 +115,18 @@ async function main() {
     grassTexture.wrapT = RepeatWrapping;
     grassTexture.repeat.set(5000 / width, 5000 / width);
 
-    const snowyRockTexture = new TextureLoader().load('resources/textures/snowy_rock_01.png');
-    snowyRockTexture.wrapS = RepeatWrapping;
-    snowyRockTexture.wrapT = RepeatWrapping;
-    snowyRockTexture.repeat.set(1500 / width, 1500 / width);
+    const rockTexture = new TextureLoader().load('resources/textures/rock_01.png');
+    rockTexture.wrapS = RepeatWrapping;
+    rockTexture.wrapT = RepeatWrapping;
+    rockTexture.repeat.set(1500 / width, 1500 / width);
 
 
-    const splatMap = new TextureLoader().load('resources/images/splatmap_01.png');
+    const splatMap = new TextureLoader().load('resources/images/SplatmapBergenMindre.png');
 
     const terrainMaterial = new TextureSplattingMaterial({
         color: 0xffffff,
         shininess: 0,
-        textures: [snowyRockTexture, grassTexture],
+        textures: [rockTexture, grassTexture],
         splatMaps: [splatMap]
     });
 
@@ -157,7 +157,7 @@ async function main() {
 
                     const height = terrainGeometry.getHeightAt(px, pz);
 
-                    if (height < 5) {
+                    if (height < 10) {
                         const tree = object.scene.children[0].clone();
 
                         tree.traverse((child) => {
@@ -173,7 +173,7 @@ async function main() {
 
                         tree.rotation.y = Math.random() * (2 * Math.PI);
 
-                        tree.scale.multiplyScalar(1.5 + Math.random() * 1);
+                        tree.scale.multiplyScalar(0.5+Math.random()*0.1);
 
                         scene.add(tree);
                     }
