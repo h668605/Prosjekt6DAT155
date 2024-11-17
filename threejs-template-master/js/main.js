@@ -13,7 +13,9 @@ import {
     BoxGeometry,
     ShaderMaterial,
     CubeTexture,
-    BackSide
+    BackSide,
+    Object3D,
+    Quaternion
 } from './lib/three.module.js';
 
 import Utilities from './lib/Utilities.js';
@@ -23,6 +25,7 @@ import TextureSplattingMaterial from './materials/TextureSplattingMaterial.js';
 import TerrainBufferGeometry from './terrain/TerrainBufferGeometry.js';
 import {GLTFLoader} from './loaders/GLTFLoader.js';
 import {SimplexNoise} from './lib/SimplexNoise.js';
+import * as rain from './Rain.js';
 
 
 async function main() {
@@ -187,20 +190,21 @@ async function main() {
     Lager skybox
      */
     // File paths for the skybox textures
+    const mpath = "resources/images/GRAA.png";
     const skyboxPaths = [
-        "resources/images/firkantethimmel.jpg", // +X
-        "resources/images/firkantethimmel.jpg", // -X
-        "resources/images/firkantethimmel.jpg", // +Y
-        "resources/images/firkantethimmel.jpg", // -Y
-        "resources/images/firkantethimmel.jpg", // +Z
-        "resources/images/firkantethimmel.jpg" // -Z
+        mpath, // +X
+        mpath, // -X
+        mpath, // +Y
+        mpath, // -Y
+        mpath, // +Z
+        mpath // -Z
     ];
 
     const loader1 = new CubeTextureLoader();
     const cubeTexture = loader1.load(skyboxPaths);
     scene.background = cubeTexture;
 
-    const skyBoxGeometry = new BoxGeometry(1, 1, 1);
+    const skyBoxGeometry = new BoxGeometry(1000, 1000, 1000);
     skyBoxGeometry.scale(-1, 1, 1); // Invert the cube so it faces inward
 
     const skyBoxMaterial = new ShaderMaterial({
@@ -225,8 +229,15 @@ async function main() {
         side: BackSide, // Render inside of the cube
     });
     const skyBox = new Mesh(skyBoxGeometry, skyBoxMaterial);
-    scene.add(skyBox);
 
+    scene.add(skyBox);
+    skyBox.position.set(0, 0, 0);
+
+    /*
+     * Regn
+     */
+    // Initialize the rain system
+    const rainSystem = new rain.Rain(scene, 5000);  // Pass scene and number of raindrops
 
 
     /*
@@ -336,6 +347,10 @@ async function main() {
         // apply rotation to velocity vector, and translate moveNode with it.
         velocity.applyQuaternion(camera.quaternion);
         camera.position.add(velocity);
+
+        //Regn
+        const deltaTime = (now - then) / 1000; // Time difference in seconds
+        rainSystem.updateRain(deltaTime);
 
         // render scene:
         renderer.render(scene, camera);
