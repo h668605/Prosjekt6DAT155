@@ -1,14 +1,19 @@
 import {
-    PerspectiveCamera,
-    WebGLRenderer,
-    PCFSoftShadowMap,
-    Scene,
-    Mesh,
-    TextureLoader,
-    RepeatWrapping,
-    DirectionalLight,
-    Vector3,
     AxesHelper,
+    CubeTextureLoader,
+    DirectionalLight,
+    Mesh,
+    PCFSoftShadowMap,
+    PerspectiveCamera,
+    RepeatWrapping,
+    Scene,
+    TextureLoader,
+    Vector3,
+    WebGLRenderer,
+    BoxGeometry,
+    ShaderMaterial,
+    CubeTexture,
+    BackSide
 } from './lib/three.module.js';
 
 import Utilities from './lib/Utilities.js';
@@ -16,8 +21,9 @@ import MouseLookController from './controls/MouseLookController.js';
 
 import TextureSplattingMaterial from './materials/TextureSplattingMaterial.js';
 import TerrainBufferGeometry from './terrain/TerrainBufferGeometry.js';
-import { GLTFLoader } from './loaders/GLTFLoader.js';
-import { SimplexNoise } from './lib/SimplexNoise.js';
+import {GLTFLoader} from './loaders/GLTFLoader.js';
+import {SimplexNoise} from './lib/SimplexNoise.js';
+
 
 async function main() {
 
@@ -177,7 +183,53 @@ async function main() {
         }
     );
 
-    /**
+    /*
+    Lager skybox
+     */
+    // File paths for the skybox textures
+    const skyboxPaths = [
+        "resources/images/firkantethimmel.jpg", // +X
+        "resources/images/firkantethimmel.jpg", // -X
+        "resources/images/firkantethimmel.jpg", // +Y
+        "resources/images/firkantethimmel.jpg", // -Y
+        "resources/images/firkantethimmel.jpg", // +Z
+        "resources/images/firkantethimmel.jpg" // -Z
+    ];
+
+    const loader1 = new CubeTextureLoader();
+    const cubeTexture = loader1.load(skyboxPaths);
+    scene.background = cubeTexture;
+
+    const skyBoxGeometry = new BoxGeometry(1, 1, 1);
+    skyBoxGeometry.scale(-1, 1, 1); // Invert the cube so it faces inward
+
+    const skyBoxMaterial = new ShaderMaterial({
+        uniforms: {
+            skybox: { value: cubeTexture },
+        },
+        vertexShader: `
+        varying vec3 vWorldPosition;
+        void main() {
+            vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+            vWorldPosition = worldPosition.xyz;
+            gl_Position = projectionMatrix * viewMatrix * worldPosition;
+        }
+    `,
+        fragmentShader: `
+        uniform samplerCube skybox;
+        varying vec3 vWorldPosition;
+        void main() {
+            gl_FragColor = textureCube(skybox, normalize(vWorldPosition));
+        }
+    `,
+        side: BackSide, // Render inside of the cube
+    });
+    const skyBox = new Mesh(skyBoxGeometry, skyBoxMaterial);
+    scene.add(skyBox);
+
+
+
+    /*
      * Set up camera controller:
      */
 
