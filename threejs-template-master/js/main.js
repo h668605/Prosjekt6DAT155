@@ -15,7 +15,8 @@ import {
     CubeTexture,
     BackSide,
     Object3D,
-    Quaternion
+    Quaternion,
+    Fog
 } from './lib/three.module.js';
 
 import Utilities from './lib/Utilities.js';
@@ -25,7 +26,8 @@ import TextureSplattingMaterial from './materials/TextureSplattingMaterial.js';
 import TerrainBufferGeometry from './terrain/TerrainBufferGeometry.js';
 import {GLTFLoader} from './loaders/GLTFLoader.js';
 import {SimplexNoise} from './lib/SimplexNoise.js';
-import * as rain from './Rain.js';
+import * as rain from './Weather/Rain.js';
+//import * as clouds from './Weather/Clouds.js';
 
 
 async function main() {
@@ -238,8 +240,15 @@ async function main() {
      */
     // Initialize the rain system
     const rainSystem = new rain.Rain(scene, 5000);  // Pass scene and number of raindrops
+    /*
+    Skyer
+     */
+    //const cloudSystem = new clouds.Clouds(scene, 'resources/images/Cloud_tex.png', 100);
 
-
+    /*
+    Tåke
+     */
+    scene.fog = new Fog( 0x8b9ea8, 20, 150);
     /*
      * Set up camera controller:
      */
@@ -351,6 +360,8 @@ async function main() {
         //Regn
         const deltaTime = (now - then) / 1000; // Time difference in seconds
         rainSystem.updateRain(deltaTime);
+        //Skyer
+        //cloudSystem.updateClouds(camera);
 
         // render scene:
         renderer.render(scene, camera);

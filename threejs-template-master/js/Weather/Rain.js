@@ -3,7 +3,7 @@ import {
     Mesh,
     SphereGeometry,
     Vector3
-} from './lib/three.module.js';
+} from '../lib/three.module.js';
 
 export class Rain {
     constructor(scene, rainCount = 1000) {
