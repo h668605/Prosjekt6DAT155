@@ -29,6 +29,8 @@ import {SimplexNoise} from './lib/SimplexNoise.js';
 import * as rain from './Weather/Rain.js';
 import * as Skybox from "./Skybox/Skybox.js";
 import * as clouds from './Weather/Clouds.js';
+import * as puddlerain from './Weather/Puddle.js';
+import {Puddle} from "./Weather/Puddle.js";
 
 
 async function main() {
@@ -200,11 +202,25 @@ async function main() {
      */
     // Initialize the rain system
     const rainSystem = new rain.Rain(scene, 13000);  // Pass scene and number of raindrops
+    /**
+     * Vannpytt
+     */
+
+    const puddleCount = 100; // Number of puddles
+    const puddles = [];
+
+    for (let i = 0; i < puddleCount; i++) {
+        const x = Math.random() * 100 - 50; // Range -50 to 50
+        const z = Math.random() * 100 - 50; // Range -50 to 50
+        const y = terrainGeometry.getHeightAt(x, z) + 0.1; // Get terrain height and offset slightly above it
+        puddles.push(new Puddle(scene, new Vector3(x, y, z), terrainGeometry));
+    }
+
 
     /**
     Skyer
      */
-    const cloudSystem = new clouds.Clouds(scene, 200);
+    const cloudSystem = new clouds.Clouds(scene, 150);
 
     /**
     Tåke
@@ -322,6 +338,10 @@ async function main() {
         rainSystem.updateRain(terrainGeometry);
         //Skyer
         cloudSystem.updateCloud(delta);
+        //Vannpytt
+
+        puddles.forEach(puddle => puddle.updatePuddle(terrainGeometry));
+
 
         // render scene:
         renderer.render(scene, camera);
