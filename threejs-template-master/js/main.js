@@ -29,6 +29,7 @@ import {SimplexNoise} from './lib/SimplexNoise.js';
 import * as rain from './Weather/Rain.js';
 import * as Skybox from "./Skybox/Skybox.js";
 import * as clouds from './Weather/Clouds.js';
+import * as birds from "./Models/Birds.js";
 
 
 async function main() {
@@ -98,7 +99,7 @@ async function main() {
      * We are using the async/await language constructs of Javascript:
      *  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
      */
-    const heightmapImage = await Utilities.loadImage('resources/images/KartBergenGrayscalePNGMindre.png');
+    const heightmapImage = await Utilities.loadImage('resources/images/KartBergenGrayscalePNGHvitere.png');
     const width = 100;
 
     const simplex = new SimplexNoise();
@@ -121,7 +122,7 @@ async function main() {
     rockTexture.repeat.set(1500 / width, 1500 / width);
 
 
-    const splatMap = new TextureLoader().load('resources/images/SplatmapBergenMindre.png');
+    const splatMap = new TextureLoader().load('resources/images/SplatmapBergenMindreMork.png');
 
     const terrainMaterial = new TextureSplattingMaterial({
         color: 0xffffff,
@@ -209,6 +210,12 @@ async function main() {
     Tåke
      */
     scene.fog = new Fog( 0x8b9ea8, 10, 50);
+
+    /**
+     * Fugler
+     */
+    const fugler = new birds.Birds(scene,10, loader);
+
     /**
      * Set up camera controller:
      */
@@ -322,6 +329,9 @@ async function main() {
         rainSystem.updateRain(deltaTime);
         //Skyer
         cloudSystem.updateCloud(delta);
+        //fugler
+        fugler.animate(delta);
+
 
         // render scene:
         renderer.render(scene, camera);
