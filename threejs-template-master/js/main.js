@@ -85,8 +85,8 @@ async function main() {
     directionalLight.target.position.set(0, 15, 0);
     scene.add(directionalLight.target);
 
-    camera.position.z = 20;
-    camera.position.y = 20;
+    camera.position.z = 1;
+    camera.position.y = 1;
     camera.rotation.x -= Math.PI * 0.25;
 
 
@@ -199,7 +199,8 @@ async function main() {
      * Regn
      */
     // Initialize the rain system
-    const rainSystem = new rain.Rain(scene, 7000);  // Pass scene and number of raindrops
+    const rainSystem = new rain.Rain(scene, 13000);  // Pass scene and number of raindrops
+
     /**
     Skyer
      */
@@ -318,8 +319,7 @@ async function main() {
         camera.position.add(velocity);
 
         //Regn
-        const deltaTime = (now - then) / 1000; // Time difference in seconds
-        rainSystem.updateRain(deltaTime);
+        rainSystem.updateRain(terrainGeometry);
         //Skyer
         cloudSystem.updateCloud(delta);
 

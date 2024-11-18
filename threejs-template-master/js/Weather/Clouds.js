@@ -41,7 +41,7 @@ export class Clouds extends MeshBasicMaterial {
             );
 
             // All clouds share the same movement direction, so apply the same velocity
-            cumulus.velocity = direction.clone().multiplyScalar(0.4);  // Slower movement speed
+            cumulus.velocity = direction.clone().multiplyScalar(0.3);  // Slower movement speed
 
             this.cloud.push(cumulus);
             this.scene.add(cumulus);
