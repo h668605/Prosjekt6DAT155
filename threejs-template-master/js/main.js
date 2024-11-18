@@ -204,7 +204,7 @@ async function main() {
     /**
     Skyer
      */
-    const cloudSystem = new clouds.Clouds(scene, 150);
+    const cloudSystem = new clouds.Clouds(scene, 200);
 
     /**
     Tåke

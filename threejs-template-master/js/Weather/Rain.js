@@ -2,7 +2,8 @@ import {
     MeshBasicMaterial,
     Mesh,
     SphereGeometry,
-    Vector3
+    Vector3,
+    CylinderGeometry
 } from '../lib/three.module.js';
 //import * as TerrainBufferGeometry from "../terrain/TerrainBufferGeometry";
 
@@ -17,7 +18,7 @@ export class Rain {
             transparent: true,
             depthWrite: false,
         });
-        this.rainGeometry = new SphereGeometry(0.05, 2, 2); // Bruker små sfærer som regndråper
+        this.rainGeometry = new CylinderGeometry(0.02, 0.02, 0.08, 8); // Bruker små sfærer som regndråper
         this.createRain();
     }
 
@@ -74,7 +75,7 @@ export class Rain {
                 }
                 if (raindrop.bounces === undefined) raindrop.bounces = 0;
                 raindrop.bounces += 1;
-                if (raindrop.bounces > 5) {
+                if (raindrop.bounces > 3) {
                     this.resetRaindrop(raindrop);
                     raindrop.bounces = 0;
                 }
@@ -82,7 +83,7 @@ export class Rain {
             }
            else {
                 // Apply gravity to pull raindrop down
-                raindrop.velocity.y -= 0.02; // Gravity strength
+                raindrop.velocity.y -= 0.03; // Gravity strength
             }
         }
     }
