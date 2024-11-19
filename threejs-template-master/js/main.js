@@ -350,7 +350,7 @@ async function main() {
         puddles.forEach(puddle => puddle.updatePuddle(terrainGeometry));
 
         //fugler
-        fugler.animate(delta);
+        fugler.animate(now);
 
 
         // render scene:
