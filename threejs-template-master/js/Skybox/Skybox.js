@@ -1,5 +1,6 @@
 import { CubeTextureLoader, BoxGeometry, ShaderMaterial, Mesh, BackSide } from '../lib/three.module.js';
 
+//går igjennom GPUen
 export class Skybox {
     constructor(scene, texturePath) {
         // Skybox texture paths

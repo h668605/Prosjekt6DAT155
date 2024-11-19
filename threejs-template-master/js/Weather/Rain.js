@@ -2,8 +2,10 @@ import {
     MeshBasicMaterial,
     Mesh,
     SphereGeometry,
-    Vector3
+    Vector3,
+    CylinderGeometry
 } from '../lib/three.module.js';
+//import * as TerrainBufferGeometry from "../terrain/TerrainBufferGeometry";
 
 export class Rain {
     constructor(scene, rainCount) {
@@ -16,7 +18,7 @@ export class Rain {
             transparent: true,
             depthWrite: false,
         });
-        this.rainGeometry = new SphereGeometry(0.05, 6, 6); // Bruker små sfærer som regndråper
+        this.rainGeometry = new CylinderGeometry(0.02, 0.02, 0.08, 8); // Bruker små sfærer som regndråper
         this.createRain();
     }
 
@@ -33,7 +35,7 @@ export class Rain {
             );
 
             // Tilfeldig fallhastighet for regndråpene
-            raindrop.velocity = new Vector3(0, -Math.random() * 0.2 - 0.1, 0);
+            raindrop.velocity = new Vector3(0, -Math.random() * 0.4 - 0.1, 0);
 
             this.rain.push(raindrop);
             this.scene.add(raindrop); // Legg til regndråpen i scenen
@@ -41,17 +43,63 @@ export class Rain {
     }
 
     // Funksjon for å oppdatere regndråpene
-    updateRain(deltaTime) {
-        for (let i = 0; i < this.rain.length; i++) {
-            const raindrop = this.rain[i];
-            raindrop.position.add(raindrop.velocity); // Oppdater posisjonen med hastigheten
+    updateRain(terrain) {
+        for (const raindrop of this.rain) {
+            // Update position based on velocity
+            raindrop.position.add(raindrop.velocity);
 
-            // Hvis regndråpen har falt under bakken, sett den tilbake til en ny posisjon
-            if (raindrop.position.y < 0) {
-                raindrop.position.y = Math.random() * 100 + 50; // Tilfeldig høyde
-                raindrop.position.x = Math.random() * 200 - 100; // Tilfeldig x-posisjon
-                raindrop.position.z = Math.random() * 200 - 100; // Tilfeldig z-posisjon
+            // Get terrain height at raindrop's (x, z) position
+            const terrainHeight = terrain.getHeightAt(raindrop.position.x, raindrop.position.z);
+
+            // Check if raindrop touches or falls below terrain
+            if (raindrop.position.y <= terrainHeight) {
+                // Reverse vertical velocity (bounce)
+                raindrop.velocity.y = Math.abs(raindrop.velocity.y) * 0.7; // Lose 30% energy per bounce
+
+                // Prevent sinking below terrain
+                raindrop.position.y = terrainHeight + 0.1;
+
+                // Scatter effect: add random offsets to x and z velocities
+                raindrop.velocity.x += (Math.random() - 0.2) * 0.1; // Small random scatter in x
+                raindrop.velocity.z += (Math.random() - 0.2) * 0.1 // Small random scatter in z
+                //Regndråpene vil hoppe i tilfeldig retning med mindre og mindre hopp når farten blir mindre
+
+                // Reduce overall velocity to simulate friction
+                raindrop.velocity.multiplyScalar(0.5); // Slow down overall velocity
+
+                // Reset if velocity is too small (stop bouncing)@
+
+                if (Math.abs(raindrop.velocity.y) < 0.05) {
+                    console.log("Resetting raindrop:", raindrop);
+                    this.resetRaindrop(raindrop);
+                }
+                if (raindrop.bounces === undefined) raindrop.bounces = 0;
+                raindrop.bounces += 1;
+                if (raindrop.bounces > 3) {
+                    this.resetRaindrop(raindrop);
+                    raindrop.bounces = 0;
+                }
+
+            }
+           else {
+                // Apply gravity to pull raindrop down
+                raindrop.velocity.y -= 0.03; // Gravity strength
             }
         }
     }
+
+// Reset a raindrop to the top of the scene with a new random position and velocity
+    resetRaindrop(raindrop) {
+        raindrop.position.set(
+            Math.random() * 200 - 100, // Random x position
+            Math.random() * 100 + 50,  // High y position
+            Math.random() * 200 - 100  // Random z position
+        );
+
+        raindrop.velocity.set(0, -Math.random() * 0.4 - 0.1, 0);
+    }
+
+
+
+
 }

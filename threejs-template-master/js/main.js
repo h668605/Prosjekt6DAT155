@@ -30,6 +30,8 @@ import * as rain from './Weather/Rain.js';
 import * as Skybox from "./Skybox/Skybox.js";
 import * as clouds from './Weather/Clouds.js';
 import * as birds from "./Models/Birds.js";
+import * as puddlerain from './Weather/Puddle.js';
+import {Puddle} from "./Weather/Puddle.js";
 
 
 async function main() {
@@ -86,8 +88,8 @@ async function main() {
     directionalLight.target.position.set(0, 15, 0);
     scene.add(directionalLight.target);
 
-    camera.position.z = 20;
-    camera.position.y = 20;
+    camera.position.z = 1;
+    camera.position.y = 1;
     camera.rotation.x -= Math.PI * 0.25;
 
 
@@ -200,7 +202,22 @@ async function main() {
      * Regn
      */
     // Initialize the rain system
-    const rainSystem = new rain.Rain(scene, 7000);  // Pass scene and number of raindrops
+    const rainSystem = new rain.Rain(scene, 13000);  // Pass scene and number of raindrops
+    /**
+     * Vannpytt
+     */
+
+    const puddleCount = 100; // Number of puddles
+    const puddles = [];
+
+    for (let i = 0; i < puddleCount; i++) {
+        const x = Math.random() * 100 - 50; // Range -50 to 50
+        const z = Math.random() * 100 - 50; // Range -50 to 50
+        const y = terrainGeometry.getHeightAt(x, z) + 0.1; // Get terrain height and offset slightly above it
+        puddles.push(new Puddle(scene, new Vector3(x, y, z), terrainGeometry));
+    }
+
+
     /**
     Skyer
      */
@@ -325,10 +342,13 @@ async function main() {
         camera.position.add(velocity);
 
         //Regn
-        const deltaTime = (now - then) / 1000; // Time difference in seconds
-        rainSystem.updateRain(deltaTime);
+        rainSystem.updateRain(terrainGeometry);
         //Skyer
         cloudSystem.updateCloud(delta);
+        //Vannpytt
+
+        puddles.forEach(puddle => puddle.updatePuddle(terrainGeometry));
+
         //fugler
         fugler.animate(delta);
 
