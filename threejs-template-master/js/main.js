@@ -16,7 +16,8 @@ import {
     BackSide,
     Object3D,
     Quaternion,
-    Fog
+    Fog,
+    Clock
 } from './lib/three.module.js';
 
 import Utilities from './lib/Utilities.js';
@@ -30,10 +31,17 @@ import * as rain from './Weather/Rain.js';
 import * as Skybox from "./Skybox/Skybox.js";
 import * as clouds from './Weather/Clouds.js';
 
+import { Water } from './objects/Water.js'
+
 
 async function main() {
 
     const scene = new Scene();
+    scene.fog = new Fog(0x8b9ea8, 1, 50); //For å få tåke på vannet
+
+    //Vann
+    const water = new Water(100, new Vector3(1, 0.5, 1)); // Størrelse og posisjon
+    scene.add(water.getMesh());
 
     const axesHelper = new AxesHelper(15);
     scene.add(axesHelper);
@@ -85,6 +93,8 @@ async function main() {
     directionalLight.target.position.set(0, 15, 0);
     scene.add(directionalLight.target);
 
+
+
     camera.position.z = 1;
     camera.position.y = 1;
     camera.rotation.x -= Math.PI * 0.25;
@@ -109,6 +119,7 @@ async function main() {
         numberOfSubdivisions: 160,
         height: 10
     });
+
 
     const grassTexture = new TextureLoader().load('resources/textures/grass_02.png');
     grassTexture.wrapS = RepeatWrapping;
@@ -210,6 +221,7 @@ async function main() {
     Tåke
      */
     scene.fog = new Fog( 0x8b9ea8, 10, 50);
+
     /**
      * Set up camera controller:
      */
@@ -323,12 +335,18 @@ async function main() {
         //Skyer
         cloudSystem.updateCloud(delta);
 
+        //Vann
+        water.update(delta * 0.1); // Convert to seconds
+
+
         // render scene:
         renderer.render(scene, camera);
 
+        const clock = new Clock();
+
         requestAnimationFrame(loop);
 
-    };
+    }
 
     loop(performance.now());
 
