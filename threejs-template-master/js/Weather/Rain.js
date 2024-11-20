@@ -43,7 +43,7 @@ export class Rain {
     }
 
     // Funksjon for å oppdatere regndråpene
-    updateRain(terrain) {
+    updateRain(terrain, puddles) {
         for (const raindrop of this.rain) {
             // Update position based on velocity
             raindrop.position.add(raindrop.velocity);
@@ -80,6 +80,7 @@ export class Rain {
                     raindrop.bounces = 0;
                 }
 
+                puddles.forEach((puddle) => puddle.checkCollision(raindrop));
             }
            else {
                 // Apply gravity to pull raindrop down

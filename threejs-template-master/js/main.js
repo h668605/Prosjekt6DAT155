@@ -341,13 +341,17 @@ async function main() {
         velocity.applyQuaternion(camera.quaternion);
         camera.position.add(velocity);
 
-        //Regn
-        rainSystem.updateRain(terrainGeometry);
+        //regn
+        //rainSystem.updateRain(terrainGeometry, scene, puddles);
         //Skyer
         cloudSystem.updateCloud(delta);
         //Vannpytt
 
-        puddles.forEach(puddle => puddle.updatePuddle(terrainGeometry));
+        rainSystem.updateRain(terrainGeometry, puddles);
+
+        puddles.forEach((puddle) => {
+            puddle.updatePuddle(terrainGeometry);
+        });
 
         //fugler
         fugler.animate(now);
