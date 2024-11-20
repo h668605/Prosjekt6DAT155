@@ -17,8 +17,12 @@ import {
     Object3D,
     Quaternion,
     Fog,
-    Clock
+    Clock,
+    PlaneGeometry
+
+
 } from './lib/three.module.js';
+
 
 import Utilities from './lib/Utilities.js';
 import MouseLookController from './controls/MouseLookController.js';
@@ -33,7 +37,6 @@ import * as clouds from './Weather/Clouds.js';
 import * as birds from "./Models/Birds.js";
 import * as puddlerain from './Weather/Puddle.js';
 import {Puddle} from "./Weather/Puddle.js";
-
 import { Water } from './objects/Water.js'
 
 
@@ -43,8 +46,11 @@ async function main() {
     scene.fog = new Fog(0x8b9ea8, 1, 50); //For å få tåke på vannet
 
     //Vann
-    const water = new Water(100, new Vector3(1, 0.5, 1)); // Størrelse og posisjon
-    scene.add(water.getMesh());
+    const water = new Water(100, new Vector3(1, 0.25, 1)); // Størrelse og posisjon
+    const waterMesh = water.getMesh(); // Hent Mesh fra klassen
+
+    waterMesh.rotation.x = -Math.PI / 2; // Legg vannet flatt
+    scene.add(waterMesh);
 
     const axesHelper = new AxesHelper(15);
     scene.add(axesHelper);
@@ -202,6 +208,21 @@ async function main() {
             console.error('Error loading model.', error);
         }
     );
+   // const waterNormals = new TextureLoader().load('resources/textures/Watertex.png', (texture) => {
+   //     texture.wrapS = texture.wrapT = RepeatWrapping;
+    //});
+
+  //  const waterGeometry = new PlaneGeometry(100, 100); // Vannplanens størrelse
+   /* const water = new Water(waterGeometry, {
+        textureWidth: 512,
+        textureHeight: 512,
+        waterNormals: waterNormals,
+        sunDirection: new Vector3(1, 1, 1),
+        sunColor: 0xffffff,
+        waterColor: 0x001e0f,
+        distortionScale: 3.7,
+        fog: scene.fog !== undefined
+    }); */
 
     /**
     Lager skybox
@@ -372,11 +393,9 @@ async function main() {
         //Vann
         water.update(delta * 0.1); // Convert to seconds
 
-
         // render scene:
         renderer.render(scene, camera);
 
-        const clock = new Clock();
 
         requestAnimationFrame(loop);
 

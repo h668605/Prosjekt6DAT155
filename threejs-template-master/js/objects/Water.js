@@ -8,7 +8,7 @@ class Water {
         const normalMap = new THREE.TextureLoader().load('/threejs-template-master/resources/textures/WaterNormal.png', (texture) => {
             texture.wrapS = THREE.RepeatWrapping;
             texture.wrapT = THREE.RepeatWrapping;
-            texture.repeat.set(4, 4);
+            texture.repeat.set(10, 10);
         });
 
         // Lag geometrien for vannet (en stor plane)
@@ -31,7 +31,7 @@ class Water {
                 varying vec2 vUv;
                 
                 void main() {
-                    vUv = uv;
+                    vUv = uv * 50.0;
                     vec3 pos = position;
                     
                     // Add wave movement
@@ -78,12 +78,7 @@ class Water {
         this.waterMesh.position.set(position.x, position.y, position.z);
         this.waterMesh.rotation.x = -Math.PI / 2; // Vann flatt på xz-planet
     }
-    const
-    normalMap = new THREE.TextureLoader().load('./resources/textures/WaterNormal.png', () => {
-        console.log('Normal map loaded successfully.');
-    }, undefined, (error) => {
-        console.error('Error loading normal map:', error);
-    });
+
 
     // Funksjon for å oppdatere vannet med tid
     update(deltaTime) {
