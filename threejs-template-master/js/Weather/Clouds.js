@@ -36,7 +36,7 @@ export class Clouds extends MeshBasicMaterial {
             // Random initial position for each cloud
             cumulus.position.set(
                 Math.random() * 200 - 100,  // x-position between -100 and 100
-                125,   // y-position between 50 and 150 (height above ground)
+                100,   // y-position between 50 and 150 (height above ground)
                 Math.random() * 200 - 100   // z-position between -100 and 100
             );
 

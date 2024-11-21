@@ -18,7 +18,7 @@ export class Puddle {
 
         const radius = Math.random() * 0.9 + 0.1; // Random radius between 0.1 and 0.4
         const height = 0.01; // Thin puddle for realism
-        const segments = Math.floor(Math.random() * 6 + 3); // Random segments between 3 and 8 (triangular to octagonal)
+        const segments = 8; // Random segments between 3 and 8 (triangular to octagonal)
 
         // Create the geometry and material for the puddle
         this.geometry = new CylinderGeometry(radius, radius, height, segments);
@@ -58,7 +58,7 @@ export class Puddle {
         this.rippleMaterial = new MeshBasicMaterial({
             map: this.rippleTexture, // Apply the texture to the material
             transparent: true,
-            opacity: 0.5, // Adjust opacity if needed
+            opacity: 0.6, // Adjust opacity if needed
             depthWrite: false, // So the ripple is transparent
         });
 
