@@ -40,7 +40,10 @@ import {Puddle} from "./Weather/Puddle.js";
 import { Water } from './objects/Water.js'
 
 
+
 async function main() {
+
+
 
     const scene = new Scene();
     scene.fog = new Fog(0x8b9ea8, 1, 50); //For å få tåke på vannet
@@ -163,6 +166,38 @@ async function main() {
 
     // instantiate a GLTFLoader:
     const loader = new GLTFLoader();
+
+    loader.load(
+        'resources/models/Bryggen.glb', // Path to your model
+        (gltf) => {
+            // Add the loaded model to the scene
+            const model = gltf.scene;
+            model.position.set(0, 0, 0); // Set position
+            model.scale.set(1, 1, 1);   // Set scale
+            scene.add(model);
+            console.log('Model loaded successfully');
+        },
+        undefined, // Optional onProgress callback
+        (error) => {
+            console.error('An error occurred while loading the model', error);
+        }
+    );
+
+    loader.load(
+        'resources/models/Bybanen.glb', // Path to your model
+        (gltf) => {
+            // Add the loaded model to the scene
+            const model = gltf.scene;
+            model.position.set(0, 0, 0); // Set position
+            model.scale.set(1, 1, 1);   // Set scale
+            scene.add(model);
+            console.log('Model loaded successfully');
+        },
+        undefined, // Optional onProgress callback
+        (error) => {
+            console.error('An error occurred while loading the model', error);
+        }
+    );
 
     loader.load(
         // resource URL
