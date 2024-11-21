@@ -18,9 +18,8 @@ import {
     Quaternion,
     Fog,
     Clock,
-    PlaneGeometry
-
-
+    PlaneGeometry,
+    AmbientLight
 } from './lib/three.module.js';
 
 
@@ -274,6 +273,7 @@ async function main() {
      * Vannpytt
      */
 
+
     const puddleCount = 100; // Number of puddles
     const puddles = [];
 
@@ -422,7 +422,7 @@ async function main() {
         });
 
         //fugler
-        fugler.animate(now);
+        fugler.animate(now)
 
 
         //Vann
