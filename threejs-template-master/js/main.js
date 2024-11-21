@@ -177,7 +177,7 @@ async function main() {
 
                     const height = terrainGeometry.getHeightAt(px, pz);
 
-                    if (height < 10) {
+                    if (height < 7 && height > 1) {
                         const tree = object.scene.children[0].clone();
 
                         tree.traverse((child) => {
