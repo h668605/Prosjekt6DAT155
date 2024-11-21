@@ -103,7 +103,8 @@ async function main() {
     // Set direction
     directionalLight.target.position.set(0, 15, 0);
     scene.add(directionalLight.target);
-
+    const ambientLight = new AmbientLight( 0x404040 ); // soft white light
+    scene.add( ambientLight );
 
 
     camera.position.z = 1;
