@@ -1,41 +1,34 @@
-// Import necessary modules
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-
-// Initialize GLTFLoader
-const loader = new GLTFLoader();
-
-// Load the model
-loader.load(
-    './models/Bryggen.glb', // Path to your .glb file
-    (gltf) => {
-        const model = gltf.scene; // Extract the model from the loaded GLTF file
-        scene.add(model); // Add the model to your existing scene
-
-        // Optional: Position, scale, and rotate the model
-        model.position.set(0, 0, 0); // Set the position (x, y, z)
-        model.scale.set(1, 1, 1);    // Scale the model uniformly
-        model.rotation.y = Math.PI / 2; // Rotate if necessary
-    },
-    undefined,
-    (error) => {
-        console.error('An error occurred while loading the model:', error);
+export class ModelLoader {
+    constructor(scene, loader) {
+        this.scene = scene;
+        this.loader = loader;
+        this.models = [];
     }
-);
 
-loader.load(
-    './models/Bybanen.glb', // Path to your .glb file
-    (gltf) => {
-        const model = gltf.scene; // Extract the model from the loaded GLTF file
-        scene.add(model); // Add the model to your existing scene
+    loadModel(path, position = new Vector3(), scale = new Vector3(1, 1, 1), rotation = 0) {
+        this.loader.load(
+            path, // Use the provided path directly
+            (gltf) => {
+                const model = gltf.scene;
 
-        // Optional: Position, scale, and rotate the model
-        model.position.set(0, 0, 0); // Set the position (x, y, z)
-        model.scale.set(1, 1, 1);    // Scale the model uniformly
-        model.rotation.y = Math.PI / 2; // Rotate if necessary
-    },
-    undefined,
-    (error) => {
-        console.error('An error occurred while loading the model:', error);
+                model.position.copy(position);
+                model.scale.copy(scale);
+                model.rotation.y = rotation;
+
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                    }
+                });
+
+                this.models.push(model);
+                this.scene.add(model); // Add the model to the scene
+            },
+            undefined,
+            (error) => {
+                console.error(`Error loading model ${path}:`, error);
+            }
+        );
     }
-);
+}
