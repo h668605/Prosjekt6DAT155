@@ -49,7 +49,7 @@ async function main() {
     scene.fog = new Fog(0x8b9ea8, 1, 50); //For å få tåke på vannet
 
     //Vann
-    const water = new Water(100, new Vector3(1, 0.25, 1)); // Størrelse og posisjon
+    const water = new Water(100, new Vector3(1, 0.55, 1)); // Størrelse og posisjon
     const waterMesh = water.getMesh(); // Hent Mesh fra klassen
 
     waterMesh.rotation.x = -Math.PI / 2; // Legg vannet flatt
