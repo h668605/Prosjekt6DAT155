@@ -18,9 +18,8 @@ import {
     Quaternion,
     Fog,
     Clock,
-    PlaneGeometry
-
-
+    PlaneGeometry,
+    AmbientLight
 } from './lib/three.module.js';
 
 
@@ -49,7 +48,7 @@ async function main() {
     scene.fog = new Fog(0x8b9ea8, 1, 50); //For å få tåke på vannet
 
     //Vann
-    const water = new Water(100, new Vector3(1, 0.25, 1)); // Størrelse og posisjon
+    const water = new Water(100, new Vector3(1, 0.55, 1)); // Størrelse og posisjon
     const waterMesh = water.getMesh(); // Hent Mesh fra klassen
 
     waterMesh.rotation.x = -Math.PI / 2; // Legg vannet flatt
@@ -104,7 +103,8 @@ async function main() {
     // Set direction
     directionalLight.target.position.set(0, 15, 0);
     scene.add(directionalLight.target);
-
+    const ambientLight = new AmbientLight( 0x404040 ); // soft white light
+    scene.add( ambientLight );
 
 
     camera.position.z = 1;
@@ -264,6 +264,7 @@ async function main() {
      * Vannpytt
      */
 
+
     const puddleCount = 100; // Number of puddles
     const puddles = [];
 
@@ -412,7 +413,7 @@ async function main() {
         });
 
         //fugler
-        fugler.animate(now);
+        fugler.animate(now)
 
 
         //Vann

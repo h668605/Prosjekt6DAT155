@@ -70,7 +70,7 @@ export class Rain {
                 // Reset if velocity is too small (stop bouncing)@
 
                 if (Math.abs(raindrop.velocity.y) < 0.05) {
-                    console.log("Resetting raindrop:", raindrop);
+                    //console.log("Resetting raindrop:", raindrop);
                     this.resetRaindrop(raindrop);
                 }
                 if (raindrop.bounces === undefined) raindrop.bounces = 0;
