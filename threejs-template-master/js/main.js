@@ -111,7 +111,7 @@ async function main() {
      * We are using the async/await language constructs of Javascript:
      *  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
      */
-    const heightmapImage = await Utilities.loadImage('resources/images/KartBergenGrayscalePNGHvitere.png');
+    const heightmapImage = await Utilities.loadImage('resources/images/KartBergenGrayscalePNGHvitereTest.png');
     const width = 100;
 
     const simplex = new SimplexNoise();
