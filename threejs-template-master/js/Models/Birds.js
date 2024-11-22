@@ -3,7 +3,14 @@ import {
     CatmullRomCurve3
 } from '/threejs-template-master/js/lib/three.module.js';
 
+
 export class Birds {
+    /**
+     * Konstruktør for klassen
+     * @param scene
+     * @param birdAmount
+     * @param loader
+     */
     constructor(scene, birdAmount, loader) {
         this.scene = scene;
         this.birdAmount = birdAmount;
@@ -13,6 +20,10 @@ export class Birds {
         this.createBirds()
     }
 
+    /**
+     * Denne metoden henter fuglemodellen, lager gitt antall fugler, posisjonerer og skalerer fuglene. Hver fugl får en
+     * unik path laget som en CatmullRomCurve3, som definerer hver fugl sin flygebane
+     */
     createBirds() {
         this.loader.load("resources/models/Birds/Flying gull.glb", (gltf) => {
             for (let i = 0; i < this.birdAmount; i++) {
@@ -24,9 +35,9 @@ export class Birds {
                     }
                 });
 
-                bird.position.x = 10 + Math.random() * 10;
+                bird.position.x = 40 + Math.random() * 10;
                 bird.position.y = 10 + Math.random() * 10;
-                bird.position.z = 10 + Math.random() * 10;
+                bird.position.z = 30 + Math.random() * 10;
 
                 bird.rotation.y = Math.random() * (2 * Math.PI);
 
@@ -51,7 +62,11 @@ export class Birds {
     }
 
 
-
+    /**
+     * Hver fugl animeres ved at man modulerer tid med 6, og for hver ny modulo får hver fugl en ny posisjon på CatmullRomCurve3 å "fly" til.
+     * Vi noramaliserer også modellen og oppdaterer slik at fuglen alltid ser forover
+     * @param time
+     */
     animate(time) {
         const t = (time / 3600 % 6) / 6; // Normalized time for movement
         this.birds.forEach(({ bird, curve }) => {

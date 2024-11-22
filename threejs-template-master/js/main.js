@@ -1,5 +1,6 @@
 import {
     AxesHelper,
+    CubeTextureLoader,
     DirectionalLight,
     Mesh,
     PCFSoftShadowMap,
@@ -9,7 +10,15 @@ import {
     TextureLoader,
     Vector3,
     WebGLRenderer,
+    BoxGeometry,
+    ShaderMaterial,
+    CubeTexture,
+    BackSide,
+    Object3D,
+    Quaternion,
     Fog,
+    Clock,
+    PlaneGeometry,
     AmbientLight
 } from './lib/three.module.js';
 
@@ -78,16 +87,24 @@ async function main() {
     /**
      * Add light
      */
-    const directionalLight = new DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(300, 400, 200);
+    const directionalLight = new DirectionalLight(0xffffff);
+    directionalLight.position.set(300, 400, 0);
+
     directionalLight.castShadow = true;
+
+    //Set up shadow properties for the light
+    directionalLight.shadow.mapSize.width = 512;
+    directionalLight.shadow.mapSize.height = 512;
+    directionalLight.shadow.camera.near = 0.5;
+    directionalLight.shadow.camera.far = 2000;
+
     scene.add(directionalLight);
 
-// Ambient Light (Soft overall illumination)
-    const ambientLight = new AmbientLight(0xffffff, 0.3); // Low intensity
-    scene.add(ambientLight);
-    //const ambientLight = new AmbientLight( 0x404040 ); // soft white light
-    //scene.add( ambientLight );
+    // Set direction
+    directionalLight.target.position.set(0, 15, 0);
+    scene.add(directionalLight.target);
+    const ambientLight = new AmbientLight( 0x404040 ); // soft white light
+    scene.add( ambientLight );
 
 
     camera.position.z = 1;
@@ -110,7 +127,7 @@ async function main() {
     const terrainGeometry = new TerrainBufferGeometry({
         width,
         heightmapImage,
-        //noiseFn: simplex.noise.bind(simplex),
+        // noiseFn: simplex.noise.bind(simplex),
         numberOfSubdivisions: 160,
         height: 10
     });
@@ -242,10 +259,12 @@ async function main() {
      * Regn
      */
     // Initialize the rain system
-    const rainSystem = new rain.Rain(scene, 14000);  // Pass scene and number of raindrops
+    const rainSystem = new rain.Rain(scene, 13000);  // Pass scene and number of raindrops
     /**
      * Vannpytt
      */
+
+
     const puddleCount = 100; // Number of puddles
     const puddles = [];
 
@@ -255,6 +274,8 @@ async function main() {
         const y = terrainGeometry.getHeightAt(x, z) + 0.1; // Get terrain height and offset slightly above it
         puddles.push(new Puddle(scene, new Vector3(x, y, z), terrainGeometry));
     }
+
+
     /**
     Skyer
      */
@@ -269,6 +290,7 @@ async function main() {
      * Fugler
      */
     const fugler = new birds.Birds(scene,10, loader);
+
 
     /**
      * Set up camera controller:
