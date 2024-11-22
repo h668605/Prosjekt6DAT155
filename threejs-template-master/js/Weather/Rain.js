@@ -8,6 +8,13 @@ import {
 //import * as TerrainBufferGeometry from "../terrain/TerrainBufferGeometry";
 
 export class Rain {
+    /**
+     * Kontruktør
+     * @param scene
+     * @param rainCount
+     *
+     * Lager ny regnform og kaller på createRain()
+     */
     constructor(scene, rainCount) {
         this.scene = scene;
         this.rainCount = rainCount;
@@ -18,11 +25,13 @@ export class Rain {
             transparent: true,
             depthWrite: false,
         });
-        this.rainGeometry = new CylinderGeometry(0.02, 0.02, 0.08, 8); // Bruker små sfærer som regndråper
+        this.rainGeometry = new CylinderGeometry(0.01, 0.01, 0.08, 8); // Bruker små sfærer som regndråper
         this.createRain();
     }
 
-    // Funksjon for å lage regndråpene
+    /**
+     * Lager regn og pusher det til scenen
+     */
     createRain() {
         for (let i = 0; i < this.rainCount; i++) {
             const raindrop = new Mesh(this.rainGeometry, this.rainMaterial);
@@ -42,7 +51,12 @@ export class Rain {
         }
     }
 
-    // Funksjon for å oppdatere regndråpene
+    /**
+     * Oppdaterer regn
+     *
+     * @param terrain
+     * @param puddles
+     */
     updateRain(terrain, puddles) {
         for (const raindrop of this.rain) {
             // Update position based on velocity
@@ -65,7 +79,7 @@ export class Rain {
                 //Regndråpene vil hoppe i tilfeldig retning med mindre og mindre hopp når farten blir mindre
 
                 // Reduce overall velocity to simulate friction
-                raindrop.velocity.multiplyScalar(0.5); // Slow down overall velocity
+                raindrop.velocity.multiplyScalar(0.3); // Slow down overall velocity
 
                 // Reset if velocity is too small (stop bouncing)@
 
@@ -89,7 +103,10 @@ export class Rain {
         }
     }
 
-// Reset a raindrop to the top of the scene with a new random position and velocity
+    /**
+     * resetter regnet til en ny random plass på himmelen og slipper det ned
+     * @param raindrop
+     */
     resetRaindrop(raindrop) {
         raindrop.position.set(
             Math.random() * 200 - 100, // Random x position

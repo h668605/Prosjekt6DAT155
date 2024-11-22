@@ -25,7 +25,7 @@ export class Clouds extends MeshBasicMaterial {
         // Define a single direction vector for all clouds to move
         const direction = new Vector3(
             Math.random() - 0.5,  // x-direction (random between -0.5 and 0.5)
-            Math.random() * 0.1 - 0.05, // small y-direction (random slight upward/downward drift)
+            0, // small y-direction (random slight upward/downward drift)
             Math.random() - 0.5   // z-direction (random between -0.5 and 0.5)
         ).normalize(); // Normalize to keep consistent movement speed
 
@@ -36,12 +36,14 @@ export class Clouds extends MeshBasicMaterial {
             // Random initial position for each cloud
             cumulus.position.set(
                 Math.random() * 200 - 100,  // x-position between -100 and 100
-                100,   // y-position between 50 and 150 (height above ground)
+                120,   // y-position between 50 and 150 (height above ground)
                 Math.random() * 200 - 100   // z-position between -100 and 100
             );
 
             // All clouds share the same movement direction, so apply the same velocity
             cumulus.velocity = direction.clone().multiplyScalar(0.3);  // Slower movement speed
+            cumulus.castShadow = false; // Cloud won't cast shadows
+            cumulus.receiveShadow = false; // Cloud won't receive shadows
 
             this.cloud.push(cumulus);
             this.scene.add(cumulus);

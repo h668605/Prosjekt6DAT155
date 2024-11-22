@@ -1,6 +1,7 @@
 import * as THREE from '../lib/three.module.js';
 
 class Water {
+
     constructor(size, position = new THREE.Vector3(0, 0, 0)) {
         this.size = size;
         this.position = position;
@@ -25,6 +26,7 @@ class Water {
                 fogColor: { value: new THREE.Color(0x8b9ea8) },
                 fogNear: { value: 1.0 },
                 fogFar: { value: 50.0 },
+                opacity: { value: 0.5 }
             },
             vertexShader: `
                 uniform float time;

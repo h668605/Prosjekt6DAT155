@@ -11,7 +11,16 @@ import {
 
 
 export class Puddle {
+    /**
+     * Kontruktør
+     * @param scene
+     * @param position
+     * @param terrain
+     */
     constructor(scene, position, terrain) {
+        /**
+         * Lager regnmesh og figuren
+         */
         this.scene = scene;
         this.position = position; // Store the initial position for the puddle
         this.terrain = terrain; // Store the terrain to get the height
@@ -42,6 +51,10 @@ export class Puddle {
             this.boundingBox = new Box3().setFromObject(this.mesh);
 
         }
+        /**
+         * Lager et mesh for en krusning i vannet
+         * @type {number}
+         */
         this.rippleTime = 0;
         this.rippleActive = false;
         this.initialScale = this.mesh.scale.clone();

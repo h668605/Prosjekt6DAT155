@@ -1,3 +1,11 @@
+import {
+    MeshBasicMaterial,
+    Mesh,
+    SphereGeometry,
+    Vector3,
+    CylinderGeometry
+} from '../lib/three.module.js';
+
 export class ModelLoader {
     constructor(scene, loader) {
         this.scene = scene;
