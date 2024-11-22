@@ -38,6 +38,7 @@ import * as puddlerain from './Weather/Puddle.js';
 import {Puddle} from "./Weather/Puddle.js";
 import { Water } from './objects/Water.js'
 import { ModelLoader } from './modelsimport/ModelLoader.js';
+import {Trees} from "./Models/Trees.js";
 
 
 async function main() {
@@ -120,7 +121,7 @@ async function main() {
      * We are using the async/await language constructs of Javascript:
      *  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
      */
-    const heightmapImage = await Utilities.loadImage('resources/images/KartBergenGrayscalePNGHvitere.png');
+    const heightmapImage = await Utilities.loadImage('resources/images/KartBergenGrayscalePNGHvitereTest.png');
     const width = 100;
 
     const simplex = new SimplexNoise();
@@ -138,7 +139,7 @@ async function main() {
     grassTexture.wrapT = RepeatWrapping;
     grassTexture.repeat.set(5000 / width, 5000 / width);
 
-    const rockTexture = new TextureLoader().load('resources/textures/rock_01.png');
+    const rockTexture = new TextureLoader().load('resources/textures/rock_03.png');
     rockTexture.wrapS = RepeatWrapping;
     rockTexture.wrapT = RepeatWrapping;
     rockTexture.repeat.set(1500 / width, 1500 / width);
@@ -165,6 +166,7 @@ async function main() {
     // instantiate a GLTFLoader:
 
     const loader = new GLTFLoader();
+
     const modelLoader = new ModelLoader(scene, loader);
 
 // Load Bryggen
@@ -186,68 +188,8 @@ async function main() {
      * Add trees
      */
 
+    const tree = new Trees(scene, terrainGeometry, loader);
 
-
-
-    loader.load(
-        // resource URL
-        'resources/models/kenney_nature_kit/tree_thin.glb',
-        // called when resource is loaded
-        (object) => {
-            for (let x = -50; x < 50; x += 8) {
-                for (let z = -50; z < 50; z += 8) {
-                    
-                    const px = x + 1 + (6 * Math.random()) - 3;
-                    const pz = z + 1 + (6 * Math.random()) - 3;
-
-                    const height = terrainGeometry.getHeightAt(px, pz);
-
-                    if (height < 7 && height > 1) {
-                        const tree = object.scene.children[0].clone();
-
-                        tree.traverse((child) => {
-                            if (child.isMesh) {
-                                child.castShadow = true;
-                                child.receiveShadow = true;
-                            }
-                        });
-                        
-                        tree.position.x = px;
-                        tree.position.y = height - 0.01;
-                        tree.position.z = pz;
-
-                        tree.rotation.y = Math.random() * (2 * Math.PI);
-
-                        tree.scale.multiplyScalar(0.5+Math.random()*0.1);
-
-                        scene.add(tree);
-                    }
-
-                }
-            }
-        },
-        (xhr) => {
-            console.log(((xhr.loaded / xhr.total) * 100) + '% loaded');
-        },
-        (error) => {
-            console.error('Error loading model.', error);
-        }
-    );
-   // const waterNormals = new TextureLoader().load('resources/textures/Watertex.png', (texture) => {
-   //     texture.wrapS = texture.wrapT = RepeatWrapping;
-    //});
-
-  //  const waterGeometry = new PlaneGeometry(100, 100); // Vannplanens størrelse
-   /* const water = new Water(waterGeometry, {
-        textureWidth: 512,
-        textureHeight: 512,
-        waterNormals: waterNormals,
-        sunDirection: new Vector3(1, 1, 1),
-        sunColor: 0xffffff,
-        waterColor: 0x001e0f,
-        distortionScale: 3.7,
-        fog: scene.fog !== undefined
-    }); */
 
     /**
     Lager skybox
@@ -289,7 +231,7 @@ async function main() {
     /**
      * Fugler
      */
-    const fugler = new birds.Birds(scene,10, loader);
+    const fugler = new birds.Birds(scene,15, loader);
 
 
     /**
