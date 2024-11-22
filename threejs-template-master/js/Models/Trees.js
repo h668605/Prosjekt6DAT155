@@ -11,7 +11,12 @@ import {
 } from '/threejs-template-master/js/lib/three.module.js';
 
 export class Trees {
-
+    /**
+     * Konstruktøren
+     * @param scene
+     * @param terrainGeometry
+     * @param loader
+     */
     constructor(scene, terrainGeometry, loader) {
         this.scene = scene;
         this.terrainGeometry = terrainGeometry;
@@ -19,6 +24,9 @@ export class Trees {
         this.makeTrees()
     }
 
+    /**
+     * Metoden som lager trærne. Tar in modell, deler opp kartet i mange deler og plasserer trær på hver del
+     */
     makeTrees(){
 
         this.loader.load(

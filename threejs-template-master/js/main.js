@@ -151,9 +151,7 @@ async function main() {
 
     scene.add(terrain);
 
-    /**
-     * Add trees
-     */
+
 
     // instantiate a GLTFLoader:
     const loader = new GLTFLoader();
@@ -175,7 +173,9 @@ async function main() {
         new Vector3(0.01, 0.01, 0.01), // Scale
         Math.PI / 2           // Rotation
     );
-
+    /**
+     * Add trees
+     */
 
     new Trees(scene, terrainGeometry, loader);
 
